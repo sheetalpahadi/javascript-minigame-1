@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Don't enter the red zone - Game 1</title>
+	<meta charset="UTF-8">
+
+<style>
+	*{
+		padding:0px;
+		margin:0px;
+		cursor:default;
+	}
+
+	#gamezone{
+
+		border:none;
+		width:400px;
+		margin: 50px auto;
+		display:flex;
+		flex-wrap:wrap;
+	}
+
+	#gamezone div{
+		margin:0px;
+		width:100px;
+		height:100px;
+		box-sizing:border-box;
+		border:2px solid black;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+
+	}
+
+	#grid1{
+		visibility: visible;
+	}
+
+	#grid2,#grid3,#grid4,#grid5,#grid6,#grid7,#grid8,#grid9,#grid10,#grid11,#grid12,#grid13,#grid14,#grid15,#grid16{
+		visibility: hidden;
+	}
+
+	
+
+	.red{
+		background-color:red;
+		color:yellow;
+	}
+
+	#grid1,#grid16{
+		background-color:green;
+	}
+
+	#timer{
+		position:absolute;
+		right:20px;
+		top:300px;
+		width:70px;
+		padding:5px 5px;
+		background-color:beige;
+		border-radius:10px;
+		border:2px solid pink;
+	}
+
+</style>
+
+</head>
+
+<body>
+	<h1 style="margin-top:30px;"><center>Move your mouse pointer over START to open the gamezone and start playing</center></h1>
+
+	<div id="gamezone">
+		<div id="grid1">START</div>
+		<div id="grid2"></div>
+		<div id="grid3" class="red">DANGER</div>
+		<div id="grid4"></div>
+		<div id="grid5" class="red">DANGER</div>
+		<div id="grid6"></div>
+		<div id="grid7"></div>
+		<div id="grid8"></div>
+		<div id="grid9"></div>
+		<div id="grid10"></div>
+		<div id="grid11" class="red ">DANGER</div>
+		<div id="grid12" class="red ">DANGER</div>
+		<div id="grid13" class="red">DANGER</div>
+		<div id="grid14"></div>
+		<div id="grid15"></div>
+		<div id="grid16">END</div>
+
+	</div>
+	<div id="timer">
+	</div>
+
+
+	<script>
+
+		let start=document.getElementById("grid1");
+		start.addEventListener('mouseover',()=>{
+			let temp=document.getElementById('gamezone');
+			temp.style.backgroundColor='grey';
+			temp.style.border='3px solid black';
+		});
+
+		start.addEventListener('mouseover',f2);
+		start.addEventListener('mouseover',f1);
+		let timer;
+
+		function f2(){
+			timer=Date.now();
+			f3();
+			()=>{document.getElementById('start').removeEventListener('mouseover',f2);}
+		}
+		let endtime;
+
+		function f3(){
+			let x=Date.now();
+			console.log(x-timer);
+			let temp=document.getElementById('timer');
+			endtime=(x-timer)/1000+' s';
+			temp.innerHTML=endtime;
+		}
+
+		setInterval(f3,1000);
+
+		function f1(){
+			
+			let temp=document.querySelectorAll('#gamezone div');
+			for(let i=0;i<temp.length;++i)
+			{
+				temp[i].style.visibility="visible";
+			}
+
+			document.getElementById('start').removeEventListener('mouseover',f1);
+			document.getElementById('start').removeEventListener('mouseover',f2);
+		}
+
+		let game=document.getElementsByClassName("red");
+		for(let i=0;i<game.length;++i)
+		{	console.log(game[i].innerHTML);
+			game[i].addEventListener('mouseover',gameover);
+		}
+
+		function gameover(){
+			alert('GAME OVER!');
+			location.reload();
+			clearInterval(f2);
+
+		}
+
+		let end=document.getElementById('grid16');
+		end.addEventListener('mouseover',()=>{
+			alert('CONGRATULATIONS!\nYou won the game!\nYou finished in : '+endtime+' secs');
+			location.reload();
+		});
+
+	</script>
+
+</body>
+</html>
